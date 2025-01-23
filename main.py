@@ -1,12 +1,14 @@
+import dotenv
 from threading import Thread
 from pyscope import pyscope as gs
 from ics import Calendar, Event
-import datetime
 from getpass import getpass
 import os
 import hashlib
 
 from pyscope.account import GSAccount, GSCourse
+
+dotenv.load_dotenv()
 
 
 def login(email, pwd) -> GSAccount:
@@ -107,9 +109,6 @@ def do_the_thing(email, pwd, sem=None):
         thread = Thread(target=get_course_events, args=(course, events))
         thread.start()
         threads.append(thread)
-        # events = get_course_events(course)
-        # for event in events:
-        #     cal.events.add(event)
 
     for thread in threads:
         thread.join()

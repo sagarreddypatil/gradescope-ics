@@ -99,16 +99,19 @@ class GSConnection:
 
         for course in student_courses.find_all("a", class_="courseBox"):
             shortname = course.find("h3", class_="courseBox--shortname").text
-            name = course.find("h4", class_="courseBox--name").text
+            name = course.find("div", class_="courseBox--name").text
             cid = course.get("href").split("/")[-1]
 
+            year = None
             for tag in course.parent.previous_siblings:
-                if tag.get("class") == "courseList--term pageSubheading":
-                    year = tag.body
+                if "courseList--term" in tag.get("class"):
+                    year = tag.text
                     break
             if year is None:
-                return False  # Should probably raise an exception.
+                raise Exception("Could not find year for course")
             self.account.add_class(cid, name, shortname, year)
+
+        return True
 
 
 # THIS IS STRICTLY FOR DEVELOPMENT TESTING :( Sorry for leaving it in.
