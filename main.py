@@ -65,7 +65,7 @@ Due: {due.strftime(date_printfmt) if due is not None else "None"}"""
 
         hash = f"{name}{course_name}{time.strftime('%Y%m%d')}"
         hash = hashlib.sha1(hash.encode("utf-8")).hexdigest()
-        event.uid = f"{hash}@sagarpatil.me"
+        event.uid = f"{hash}@sagar.sh"
         return event
 
     if assigned is not None:
