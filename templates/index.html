@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Gradescope iCalendar</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /* justify-content: center; */
+        height: 100vh;
+      }
+
+      input {
+        margin: 0.5rem;
+        padding: 0.5rem;
+        width: 300px;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Gradescope iCalendar</h1>
+      <input type="text" id="email" placeholder="Gradescope Email" />
+      <input type="password" id="pwd" placeholder="Gradescope Password" />
+      <input type="text" id="sem" placeholder="Semester (e.g. Spring 2025)" />
+
+      <div style="height: 1rem"></div>
+
+      <input type="text" id="url" placeholder="URL" readonly />
+    </div>
+
+    <script>
+      function updateURL() {
+        var email = document.getElementById("email").value;
+        var pwd = document.getElementById("pwd").value;
+        var sem = document.getElementById("sem").value;
+
+        if (email === "" || pwd === "" || sem === "") {
+          document.getElementById("url").value = "";
+          return;
+        }
+
+        const data = {
+          email: email,
+          pwd: pwd,
+          sem: sem,
+        };
+
+        const data_b64 = btoa(JSON.stringify(data));
+
+        let url = window.location.href;
+        url = url.substring(0, url.lastIndexOf("/"));
+        url += "/gradescope.ics?data=" + data_b64;
+        document.getElementById("url").value = url;
+      }
+
+      document.getElementById("email").oninput = updateURL;
+      document.getElementById("pwd").oninput = updateURL;
+      document.getElementById("sem").oninput = updateURL;
+
+      updateURL();
+
+      document.getElementById("url").onclick = function () {
+        this.select();
+        document.execCommand("copy");
+      };
+    </script>
+  </body>
+</html>
